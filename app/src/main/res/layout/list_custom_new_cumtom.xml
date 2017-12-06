@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" 
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="right"
+    android:paddingTop="@dimen/paddingtopandbottom"
+>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:layout_marginLeft="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="5dp"
+                android:background="@drawable/layout_custom_yellow"
+                android:ellipsize="end"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/time"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/text_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <ImageView
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/chat_right_icon"
+        android:scaleType="fitXY"
+        />
+
+    <com.dgy.chatdog.view.RoundImagenewView
+        android:id="@+id/pic"
+        android:layout_marginRight="@dimen/paddingleftandright"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@mipmap/defaultpic01"
+        android:scaleType="fitXY"
+        />
+</LinearLayout>

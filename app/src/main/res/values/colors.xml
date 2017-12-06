@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#efc23c</color>
+    <color name="colorPrimaryDark">#efc23c</color>
+    <color name="colorAccent">#efc23c</color>
+
+
+    <color name="colorInactive">#747474</color>
+    <color name="colorActiveSmall">#FFFFFF</color>
+    <color name="colorInactiveSmall">#50FFFFFF</color>
+
+    <color name="color_tab_1">#455C65</color>
+    <color name="color_tab_2">#00886A</color>
+    <color name="color_tab_3">#8B6B62</color>
+    <color name="color_tab_4">#6C4A42</color>
+
+    <color name="color_notification_back">#ffcd33</color>
+    <color name="color_notification_text">#3E4757</color>
+
+    <color name="color_nav_icon_notcooise">#7a7a7a</color>
+    <color name="backgroundcolor">#f7f7f7</color>
+    <!--半透明背景-->
+    <color name="transparent_background">#50000000</color>
+
+    <array name="tab_colors">
+        <item name="tab_1">#455C65</item>
+        <item name="tab_2">#00886A</item>
+        <item name="tab_3">#8B6B62</item>
+        <item name="tab_4">#6C4A42</item>
+    </array>
+
+    <!--分隔线颜色-->
+    <color name="linecolos">#eaeaec</color>
+
+    <color name="text_gray">#a8a8a8</color>
+    <color name="text_graymore">#494949</color>
+
+    <!--登录字体黑灰色-->
+    <color name="text_logintext">#3b342e</color>
+    <!--蓝紫色背景-->
+    <color name="background_blue">#3a3d58</color>
+
+    <!--蓝紫色背景颜色-->
+    <color name="text_purple">#848695</color>
+
+    <!--红色-->
+    <color name="text_red">#fc1616</color>
+    <!--蓝色-->
+    <color name="text_blue">#00a9f0</color>
+    <!--白色-->
+    <color name="text_white">#ffffff</color>
+
+    <color name="white">#ffffff</color>
+    <color name="gray">#cccccc</color>
+
+    <color name="drop_down_selected">#ffffff</color>
+    <color name="drop_down_unselected">#494949</color>
+
+    <color name="mask_color">#88888888</color>
+    <color name="check_bg">#f2f2f2</color>
+    <color name="un_press_color">#efc23c</color>
+
+    <!--状态空车和运输中颜色-->
+    <color name="text_status_red">#e64a4a</color>
+    <!--白色-->
+    <color name="text_status_green">#00c25b</color>
+
+</resources>

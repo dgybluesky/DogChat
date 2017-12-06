@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" 
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/paddingtopandbottom"
+>
+    <com.dgy.chatdog.view.RoundImagenewView
+        android:id="@+id/pic"
+        android:layout_marginLeft="@dimen/paddingleftandright"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@mipmap/customer_head"
+        android:scaleType="fitXY"
+        />
+    <ImageView
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/chat_left_icon"
+        android:scaleType="fitXY"
+        />
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:background="@drawable/layout_custom_white"
+            android:ellipsize="end"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/time"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_gray"
+            android:ellipsize="end"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+
+</LinearLayout>
