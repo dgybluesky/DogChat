@@ -93,7 +93,6 @@ public class ClientUtil {
                 list.add(getMapjson(jsonObj.toString()));
             }
         } catch (Exception e) {
-            // TODO: handle exception
             e.printStackTrace();
         }
         return list;
@@ -134,9 +133,9 @@ public class ClientUtil {
             String requesturl=app.getString(R.string.mianurl)+url;
             request = new HttpPost(new URI(requesturl));
             App app=(App)context.getApplicationContext();
-            request.setHeader("User-Agent"," "+";DOGCHAT-APP/ANDROID/"+ OtherUtils.getVersion(context)+"/"+OtherUtils.getDeviceId(context)+"/"+OtherUtils.getPhoneModel()+"/default/");
+            //request.setHeader("User-Agent"," "+";DOGCHAT-APP/ANDROID/"+ OtherUtils.getVersion(context)+"/"+OtherUtils.getDeviceId(context)+"/"+OtherUtils.getPhoneModel()+"/default/");
             SharedPreferences sp = context.getSharedPreferences("SP", MODE_PRIVATE);
-            request.setHeader("DEVICE-UNIONID", OtherUtils.getDeviceId(context));
+            //request.setHeader("DEVICE-UNIONID", OtherUtils.getDeviceId(context));
             if(map!=null && map.size()>0){
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 for(String key : map.keySet())

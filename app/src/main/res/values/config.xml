@@ -2,5 +2,6 @@
 <resources>
 
     <string name="mianurl">http://www.tuling123.com/openapi/api</string>
+    <string name="headurl">http://up.qqjia.com/z/23/tu29190_2.jpg</string>
 
 </resources>

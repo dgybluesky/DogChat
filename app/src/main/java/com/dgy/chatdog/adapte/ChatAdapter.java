@@ -62,9 +62,9 @@ public class ChatAdapter extends BaseAdapter {
                     .cacheInMemory(true) //
                     .cacheOnDisk(true) //
                     .build();//
-            ImageLoader.getInstance().displayImage(map.getString("pic"),holder.pic,defaultOptions);
+            ImageLoader.getInstance().displayImage(context.getResources().getString(R.string.headurl),holder.pic,defaultOptions);
         }
-        int typecode=map.getInt("typecode",0);/*100000	文本类
+        int code=map.getInt("code",0);/*100000	文本类
                                                 200000	链接类
                                                 302000	新闻类
                                                 308000	菜谱类*/
@@ -83,7 +83,7 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         final MapEntity map = lists.get(position);
-        if (map.getInt("typecode", 0) < 99999) {
+        if (map.getInt("code", 0) < 99999) {
             return 1;
         } else {
             return 0;
@@ -111,15 +111,15 @@ public class ChatAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @BindView(R.id.tv_content)
         TextView tvContent;
-        @BindView(R.id.time)
         TextView time;
-        @BindView(R.id.pic)
         RoundImagenewView pic;
 
         ViewHolder(View view) {
-            ButterKnife.bind(this, view);
+            tvContent= (TextView) view.findViewById(R.id.tv_content);
+            time= (TextView) view.findViewById(R.id.time);
+            pic= (RoundImagenewView) view.findViewById(R.id.pic);
+
         }
     }
 }

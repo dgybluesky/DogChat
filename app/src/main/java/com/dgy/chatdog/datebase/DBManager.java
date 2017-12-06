@@ -40,7 +40,7 @@ public class DBManager
             Integer chartid=null;
             db.execSQL("INSERT INTO " + DatabaseHelper.MAIN_TABLE_NAME
                     + " VALUES(null, ?, ?, ? ,?)", new Object[] { chat.getString("code",null),
-                    chat.getString("text",null), chat.getString("url",null),chat.getString("createtime"),null});
+                    chat.getString("text",null), chat.getString("url",null),chat.getString("createtime",null)});
             if (articlelist!=null && articlelist.size()>0){
                 Cursor c = db.rawQuery("SELECT last_insert_rowid()", null);
                 c.moveToFirst();
@@ -83,14 +83,14 @@ public class DBManager
             Cursor articlecursor=queryArticleCursor(chartid);
             while (articlecursor.moveToNext()){
                 MapEntity article = new MapEntity();
-                article.put("article",c.getString(c.getColumnIndex("article")));
-                article.put("source",c.getString(c.getColumnIndex("source")));
-                article.put("detailurl",c.getString(c.getColumnIndex("detailurl")));
-                article.put("icon",c.getString(c.getColumnIndex("icon")));
+                article.put("article",articlecursor.getString(articlecursor.getColumnIndex("article")));
+                article.put("source",articlecursor.getString(articlecursor.getColumnIndex("source")));
+                article.put("detailurl",articlecursor.getString(articlecursor.getColumnIndex("detailurl")));
+                article.put("icon",articlecursor.getString(articlecursor.getColumnIndex("icon")));
                 articlelist.add(article);
             }
             if (articlelist!=null && articlelist.size()>0){
-                chart.put("articlelist",articlelist);
+                chart.put("list",articlelist);
             }
             charts.add(chart);
         }
@@ -119,7 +119,7 @@ public class DBManager
     public Cursor queryArticleCursor(int chartid)
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> queryTheCursor");
-        Cursor c = db.rawQuery("SELECT * FROM " + DatabaseHelper.ARTICLE_TABLE_NAME+ "WHERE chartid = "+chartid,
+        Cursor c = db.rawQuery("SELECT * FROM " + DatabaseHelper.ARTICLE_TABLE_NAME+ " WHERE chartid = "+chartid,
                 null);
         return c;
     }

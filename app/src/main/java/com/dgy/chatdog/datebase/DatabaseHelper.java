@@ -79,6 +79,8 @@ public class DatabaseHelper extends SQLiteOpenHelper// 继承SQLiteOpenHelper类
         sBuffer.append("[detailurl] TEXT ,");
         sBuffer.append("[icon] TEXT)");
 
+        db.execSQL(sBuffer.toString());
+
         // 即便程序修改重新运行，只要数据库已经创建过，就不会再进入这个onCreate方法
 
     }

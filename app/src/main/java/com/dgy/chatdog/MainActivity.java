@@ -17,6 +17,9 @@ import com.dgy.chatdog.utils.MapEntity;
 import com.dgy.chatdog.utils.OtherUtils;
 import com.dgy.chatdog.utils.PasswordHasher;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,6 +106,8 @@ public class MainActivity extends BaseActivity {
     private void initLists() {
         lists = dbManager.query();
         adapter = new ChatAdapter(MainActivity.this, lists);
+        listChat.setAdapter(adapter);
+        listChat.setSelection(adapter.getCount() - 1);
     }
 
 
@@ -115,8 +120,12 @@ public class MainActivity extends BaseActivity {
             showtipsWarning("请输入您的内容！");
             return;
         }
+        content1.setText("");
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         MapEntity selfmap=new MapEntity();
         selfmap.put("text",contenttext);
+        selfmap.put("createtime",sdf.format(d));
         dbManager.addChart(selfmap,null);
         lists.add(selfmap);
         listChat.setAdapter(adapter);
@@ -129,14 +138,21 @@ public class MainActivity extends BaseActivity {
                 params.put("key", AppConstants.API_KEY);
                 params.put("userid", PasswordHasher.Md5Encoder(OtherUtils.getDeviceId(MainActivity.this)));
                 params.put("info",contenttext);
-                MapEntity map = JsonUtils.jsonToMap(client.getServerJson("", params));
+                final MapEntity map = JsonUtils.jsonToMap(client.getServerJson("", params));
                 Bundle bundle = new Bundle();
                 Message msg = new Message();
                 if (map != null) {
+                    final List<MapEntity> articlelist=map.getAnyObject("list", ArrayList.class);
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-
+                            Date d = new Date();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            map.put("createtime",sdf.format(d));
+                            dbManager.addChart(map,articlelist);
+                            lists.add(map);
+                            listChat.setAdapter(adapter);
+                            listChat.setSelection(adapter.getCount() - 1);
                         }
                     });
                 } else {

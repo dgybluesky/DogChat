@@ -10,7 +10,7 @@
         android:layout_marginLeft="@dimen/paddingleftandright"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@mipmap/customer_head"
+        android:src="@mipmap/dgy"
         android:scaleType="fitXY"
         />
     <ImageView
