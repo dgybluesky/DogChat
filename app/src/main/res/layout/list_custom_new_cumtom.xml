@@ -23,28 +23,29 @@
             android:orientation="vertical">
             <TextView
                 android:id="@+id/tv_content"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="5dp"
                 android:background="@drawable/layout_custom_yellow"
                 android:ellipsize="end"
-                android:textSize="15sp"/>
+                android:textSize="13sp"/>
             <TextView
                 android:id="@+id/time"
                 android:layout_gravity="left"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
                 android:textColor="@color/text_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:textSize="13sp"/>
+                android:textSize="10sp"/>
         </LinearLayout>
 
     </LinearLayout>
     <ImageView
         android:layout_marginRight="3dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/chat_right_icon"
@@ -54,8 +55,8 @@
     <com.dgy.chatdog.view.RoundImagenewView
         android:id="@+id/pic"
         android:layout_marginRight="@dimen/paddingleftandright"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@mipmap/defaultpic01"
         android:scaleType="fitXY"
         />

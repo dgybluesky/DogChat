@@ -1,19 +1,26 @@
 package com.dgy.chatdog.adapte;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dgy.chatdog.MainActivity;
 import com.dgy.chatdog.R;
+import com.dgy.chatdog.activity.NewsCenterActivity;
 import com.dgy.chatdog.utils.MapEntity;
 import com.dgy.chatdog.view.RoundImagenewView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,9 +36,11 @@ public class ChatAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private List<MapEntity> lists;
+    private MainActivity mainActivity;
 
     public ChatAdapter(Context context, List<MapEntity> lists) {
         this.context = context;
+        this.mainActivity= (MainActivity) context;
         this.lists = lists;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -68,8 +77,50 @@ public class ChatAdapter extends BaseAdapter {
                                                 200000	链接类
                                                 302000	新闻类
                                                 308000	菜谱类*/
-        holder.tvContent.setText(map.getString("text"));
         holder.time.setText(map.getString("createtime"));
+        holder.tvContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        switch (code){
+            case 200000:{
+                holder.tvContent.setText(map.getString("text")+"\r\n点击这里查看");
+                holder.tvContent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mainActivity.openWebForOutside(map.getString("url"));
+                    }
+                });
+            }break;
+            case 302000:{
+                String text=map.getString("text")+"\r\n";
+                List<MapEntity> articlelist=map.getAnyObject("list", ArrayList.class);
+                int i=0;
+                for(MapEntity article:articlelist){
+                    if(i<5) {
+                        text += (article.getString("article") + "\r\n");
+                    }else{
+                        break;
+                    }
+                    i+=1;
+                }
+                text+="......\r\n";
+                text+="点击查看详情和更多新闻";
+                holder.tvContent.setText(text);
+                holder.tvContent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mainActivity.startActivity(new Intent(mainActivity, NewsCenterActivity.class)
+                        .putExtra("chartid",map.getInt("id")));
+                    }
+                });
+            }break;
+            default:{
+                holder.tvContent.setText(map.getString("text"));
+            }break;
+        }
         return convertView;
     }
 
@@ -117,6 +168,7 @@ public class ChatAdapter extends BaseAdapter {
 
         ViewHolder(View view) {
             tvContent= (TextView) view.findViewById(R.id.tv_content);
+            tvContent.setKeyListener(null);
             time= (TextView) view.findViewById(R.id.time);
             pic= (RoundImagenewView) view.findViewById(R.id.pic);
 

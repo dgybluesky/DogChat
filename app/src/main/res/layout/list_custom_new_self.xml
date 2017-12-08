@@ -8,14 +8,14 @@
     <com.dgy.chatdog.view.RoundImagenewView
         android:id="@+id/pic"
         android:layout_marginLeft="@dimen/paddingleftandright"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@mipmap/dgy"
         android:scaleType="fitXY"
         />
     <ImageView
         android:layout_marginLeft="3dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/chat_left_icon"
@@ -30,21 +30,22 @@
         <TextView
             android:id="@+id/tv_content"
             android:layout_marginRight="50dp"
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="5dp"
             android:background="@drawable/layout_custom_white"
             android:ellipsize="end"
-            android:textSize="15sp"/>
+            android:textSize="13sp"/>
         <TextView
             android:id="@+id/time"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/text_gray"
             android:ellipsize="end"
-            android:textSize="13sp"/>
+            android:textSize="10sp"/>
     </LinearLayout>
 
 

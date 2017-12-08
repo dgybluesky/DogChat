@@ -3,6 +3,7 @@ package com.dgy.chatdog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.dgy.chatdog.adapte.ChatAdapter;
 import com.dgy.chatdog.datebase.DBManager;
 import com.dgy.chatdog.utils.ClientUtil;
+import com.dgy.chatdog.utils.HideIMEUtil;
 import com.dgy.chatdog.utils.JsonUtils;
 import com.dgy.chatdog.utils.MapEntity;
 import com.dgy.chatdog.utils.OtherUtils;
@@ -33,7 +35,6 @@ public class MainActivity extends BaseActivity {
     private Button submit;
     private List<MapEntity> lists;
     private ChatAdapter adapter;
-    private DBManager dbManager;
 
     private final Handler handler = new Handler() {
         @Override
@@ -69,10 +70,10 @@ public class MainActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        HideIMEUtil.wrap(this);//键盘管理，点击除editText外区域收起键盘
         ButterKnife.bind(this);
         setTitleBar("小丁丁",false);
         initView();
-        dbManager = new DBManager(this);
         initLists();
         //handler.postDelayed(runnable, 1000 * 60 * 2);
     }
@@ -94,6 +95,16 @@ public class MainActivity extends BaseActivity {
     private void initView(){
         listChat= (ListView) findViewById(R.id.list_chat);
         content1= (EditText) findViewById(R.id.content1);
+        content1.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER){
+                    questionSub();
+                    return true;
+                }
+                return false;
+            }
+        });
         submit= (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +128,7 @@ public class MainActivity extends BaseActivity {
     private void questionSub() {
         final String contenttext = content1.getText().toString().trim();
         if (contenttext.equals("")) {
-            showtipsWarning("请输入您的内容！");
+            //showtipsWarning("请输入您的内容！");
             return;
         }
         content1.setText("");
@@ -149,7 +160,8 @@ public class MainActivity extends BaseActivity {
                             Date d = new Date();
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             map.put("createtime",sdf.format(d));
-                            dbManager.addChart(map,articlelist);
+                            int chatid=dbManager.addChart(map,articlelist);
+                            map.put("id",chatid);
                             lists.add(map);
                             listChat.setAdapter(adapter);
                             listChat.setSelection(adapter.getCount() - 1);
@@ -165,6 +177,5 @@ public class MainActivity extends BaseActivity {
         }).start();
 
     }
-
 
 }

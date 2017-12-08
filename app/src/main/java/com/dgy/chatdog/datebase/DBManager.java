@@ -30,21 +30,23 @@ public class DBManager
      * 添加一条聊天记录
      * 
      * @param chat
+     * @return chartid 返回插入的聊天记录Id
      */
-    public void addChart(MapEntity chat,List<MapEntity> articlelist)
+    public int addChart(MapEntity chat,List<MapEntity> articlelist)
     {
+        int chartid =0;
         // 采用事务处理，确保数据完整性
         db.beginTransaction(); // 开始事务
         try
         {
-            Integer chartid=null;
+
             db.execSQL("INSERT INTO " + DatabaseHelper.MAIN_TABLE_NAME
                     + " VALUES(null, ?, ?, ? ,?)", new Object[] { chat.getString("code",null),
                     chat.getString("text",null), chat.getString("url",null),chat.getString("createtime",null)});
+            Cursor c = db.rawQuery("SELECT last_insert_rowid()", null);
+            c.moveToFirst();
+            chartid =c.getInt(0);
             if (articlelist!=null && articlelist.size()>0){
-                Cursor c = db.rawQuery("SELECT last_insert_rowid()", null);
-                c.moveToFirst();
-                chartid = c.getInt(0);
                 for(MapEntity map:articlelist){
                     db.execSQL("INSERT INTO " + DatabaseHelper.ARTICLE_TABLE_NAME
                             + " VALUES(null, ?, ?, ? ,? ,?)", new Object[] { chartid,map.getString("article",null),
@@ -57,6 +59,7 @@ public class DBManager
         {
             db.endTransaction(); // 结束事务
         }
+        return chartid;
     }
 
 
@@ -75,20 +78,12 @@ public class DBManager
         {
             MapEntity chart = new MapEntity();
             int chartid=c.getInt(c.getColumnIndex("_id"));
+            chart.put("id",chartid);
             chart.put("code",c.getString(c.getColumnIndex("code")));
             chart.put("text",c.getString(c.getColumnIndex("text")));
             chart.put("url",c.getString(c.getColumnIndex("url")));
             chart.put("createtime",c.getString(c.getColumnIndex("createtime")));
-            List<MapEntity> articlelist=new ArrayList<MapEntity>();
-            Cursor articlecursor=queryArticleCursor(chartid);
-            while (articlecursor.moveToNext()){
-                MapEntity article = new MapEntity();
-                article.put("article",articlecursor.getString(articlecursor.getColumnIndex("article")));
-                article.put("source",articlecursor.getString(articlecursor.getColumnIndex("source")));
-                article.put("detailurl",articlecursor.getString(articlecursor.getColumnIndex("detailurl")));
-                article.put("icon",articlecursor.getString(articlecursor.getColumnIndex("icon")));
-                articlelist.add(article);
-            }
+            List<MapEntity> articlelist=queryArticleByChartid(chartid);
             if (articlelist!=null && articlelist.size()>0){
                 chart.put("list",articlelist);
             }
@@ -99,11 +94,30 @@ public class DBManager
     }
 
     /**
+     * 根据聊天id查询新闻详情
+     * @param chartid
+     * @return
+     */
+    public List<MapEntity> queryArticleByChartid(int chartid){
+        List<MapEntity> articlelist=new ArrayList<MapEntity>();
+        Cursor articlecursor=queryArticleCursor(chartid);
+        while (articlecursor.moveToNext()){
+            MapEntity article = new MapEntity();
+            article.put("article",articlecursor.getString(articlecursor.getColumnIndex("article")));
+            article.put("source",articlecursor.getString(articlecursor.getColumnIndex("source")));
+            article.put("detailurl",articlecursor.getString(articlecursor.getColumnIndex("detailurl")));
+            article.put("icon",articlecursor.getString(articlecursor.getColumnIndex("icon")));
+            articlelist.add(article);
+        }
+        return articlelist;
+    }
+
+    /**
      * query all persons, return cursor
      * 
      * @return Cursor
      */
-    public Cursor queryChatCursor()
+    private Cursor queryChatCursor()
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> queryTheCursor");
         Cursor c = db.rawQuery("SELECT * FROM " + DatabaseHelper.MAIN_TABLE_NAME,
@@ -116,7 +130,7 @@ public class DBManager
      * @param chartid
      * @return
      */
-    public Cursor queryArticleCursor(int chartid)
+    private Cursor queryArticleCursor(int chartid)
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> queryTheCursor");
         Cursor c = db.rawQuery("SELECT * FROM " + DatabaseHelper.ARTICLE_TABLE_NAME+ " WHERE chartid = "+chartid,

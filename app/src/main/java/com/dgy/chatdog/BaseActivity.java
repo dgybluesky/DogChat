@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.dgy.chatdog.utils.ClientUtil;
+import com.dgy.chatdog.datebase.DBManager;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,12 +38,13 @@ public class BaseActivity extends AppCompatActivity {
     private SweetAlertDialog pDialog;
     protected TranslateAnimation showAnim;
     protected TranslateAnimation hiddenAmin;
-    protected ClientUtil clientUtil;//通讯工具
+    protected DBManager dbManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbManager = new DBManager(this);
         pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         //控件显示的动画
         showAnim = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
@@ -129,6 +130,22 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * 调用外部浏览器打开链接
+     * @param url
+     */
+    public void openWebForOutside(String url){
+        try {
+            Uri uri = Uri.parse(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }catch (Exception e){
+            e.printStackTrace();
+            showtipsWarning("该链接有误~暂不支持打开~~");
+        }
+    }
+
+
 
     public void setListViewHeightBasedOnChildren(ListView listView) {
 
@@ -197,16 +214,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-
-    /**
-     * 浏览器打开网址
-     * @param shareurl
-     */
-    protected void browserShare(String shareurl){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(shareurl));
-        startActivity(intent);
-    }
 
     /**
      * 复制内容到剪切板
@@ -386,20 +393,12 @@ public class BaseActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void showtipsRoutineRoute(String msg){
-        new SweetAlertDialog(this)
-                .setTitleText("常规路线信息")
-                .setContentText((msg))
-                .setConfirmText("关闭")
-                .show();
-    }
-
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         endProgressDialog();
+        dbManager.closeDB();
     }
 
     /**

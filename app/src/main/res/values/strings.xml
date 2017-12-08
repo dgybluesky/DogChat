@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">DGYDogChat</string>
+    <string name="app_name">DGYDogChart</string>
 
 
 
-    <string name="loading">玩命为您加载中</string>
+    <string name="loading">玩命为您加载中...</string>
 
 
 </resources>
