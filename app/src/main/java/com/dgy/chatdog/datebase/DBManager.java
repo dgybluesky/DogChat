@@ -62,6 +62,29 @@ public class DBManager
         return chartid;
     }
 
+    /**
+     * 删除记录
+     * @return
+     */
+    public void clean()
+    {
+        // 采用事务处理，确保数据完整性
+        db.beginTransaction(); // 开始事务
+        try
+        {
+
+            db.execSQL("DELETE FROM " + DatabaseHelper.ARTICLE_TABLE_NAME
+                    );
+            db.execSQL("DELETE FROM " + DatabaseHelper.MAIN_TABLE_NAME
+            );
+            db.setTransactionSuccessful(); // 设置事务成功完成
+        }
+        finally
+        {
+            db.endTransaction(); // 结束事务
+        }
+    }
+
 
 
     /**

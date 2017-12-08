@@ -1,23 +1,27 @@
 package com.dgy.chatdog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dgy.chatdog.adapte.ChatAdapter;
-import com.dgy.chatdog.datebase.DBManager;
 import com.dgy.chatdog.utils.ClientUtil;
 import com.dgy.chatdog.utils.HideIMEUtil;
 import com.dgy.chatdog.utils.JsonUtils;
 import com.dgy.chatdog.utils.MapEntity;
 import com.dgy.chatdog.utils.OtherUtils;
 import com.dgy.chatdog.utils.PasswordHasher;
+import com.special.ResideMenu.ResideMenu;
+import com.special.ResideMenu.ResideMenuItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends BaseActivity {
 
@@ -35,6 +40,8 @@ public class MainActivity extends BaseActivity {
     private Button submit;
     private List<MapEntity> lists;
     private ChatAdapter adapter;
+    private TextView title_titleright;
+    private ResideMenu resideMenu;
 
     private final Handler handler = new Handler() {
         @Override
@@ -74,6 +81,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         setTitleBar("小丁丁",false);
         initView();
+        initMenu();
         initLists();
         //handler.postDelayed(runnable, 1000 * 60 * 2);
     }
@@ -91,6 +99,55 @@ public class MainActivity extends BaseActivity {
             }
         }
     };
+
+    private void initMenu(){
+        resideMenu = new ResideMenu(this);
+        resideMenu.setBackground(R.mipmap.menubg);
+        resideMenu.attachToActivity(this);
+        resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_LEFT);
+
+        // create menu items;
+        String titles[] = { "联系作者", "清理聊天记录" };
+        int icon[] = { R.mipmap.contact, R.mipmap.clean };
+
+        for (int i = 0; i < titles.length; i++){
+            ResideMenuItem item = new ResideMenuItem(this, icon[i], titles[i]);
+            if (i==0){
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showtipsWarning("作者QQ：807524357，微信邮箱同号，欢迎骚扰~");
+                    }
+                });
+            }
+            if (i==1){
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new SweetAlertDialog(MainActivity.this, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("提示信息")
+                                .setContentText("您确定要清空聊天记录么~")
+                                .setCancelText("取消")
+                                .setConfirmText("确定")
+                                .showCancelButton(true)
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        dbManager.clean();
+                                        lists.clear();
+                                        adapter=new ChatAdapter(MainActivity.this,lists);
+                                        listChat.setAdapter(adapter);
+                                        resideMenu.closeMenu();
+                                        sweetAlertDialog.cancel();
+                                    }
+                                })
+                                .show();
+                    }
+                });
+            }
+            resideMenu.addMenuItem(item,  ResideMenu.DIRECTION_RIGHT); // or  ResideMenu.DIRECTION_RIGHT
+        }
+    }
 
     private void initView(){
         listChat= (ListView) findViewById(R.id.list_chat);
@@ -112,6 +169,15 @@ public class MainActivity extends BaseActivity {
                 questionSub();
             }
         });
+        title_titleright= (TextView) findViewById(R.id.title_righttitle);
+        title_titleright.setText("菜单");
+        title_titleright.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
+            }
+        });
+        title_titleright.setVisibility(View.VISIBLE);
     }
 
     private void initLists() {
@@ -176,6 +242,11 @@ public class MainActivity extends BaseActivity {
             }
         }).start();
 
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return resideMenu.dispatchTouchEvent(ev);
     }
 
 }
